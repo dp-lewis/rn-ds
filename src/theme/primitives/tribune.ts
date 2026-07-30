@@ -7,6 +7,7 @@ import type { BrandPrimitives } from './types';
 export const tribune: BrandPrimitives = {
   id: 'tribune',
   name: 'THE TRIBUNE',
+  shortName: 'Tribune',
   fontFamily: {
     display: { ios: 'Georgia', android: 'serif', default: 'Georgia' },
     mono: { ios: 'Menlo', android: 'monospace', default: 'Menlo' },

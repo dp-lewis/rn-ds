@@ -11,7 +11,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import type { RootStackParamList } from './src/navigation/types';
 import ArticleScreen from './src/screens/ArticleScreen';
 import HomeScreen from './src/screens/HomeScreen';
-import { ThemeProvider, useTheme, type Theme } from './src/theme';
+import { BrandProvider, useTheme, type Theme } from './src/theme';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -60,13 +60,12 @@ export default function App() {
   return (
     <SafeAreaProvider>
       {/*
-        `brand` picks the masthead — swap it for 'tribune' or 'pulse' and the
-        whole app re-skins, because components only read semantic tokens.
-        No `mode` prop, so it follows the OS appearance setting.
+        Holds the selected brand so the switcher in the masthead can change it
+        at runtime. Light/dark still follows the OS appearance setting.
       */}
-      <ThemeProvider brand="meridian">
+      <BrandProvider initialBrand="meridian">
         <Navigation />
-      </ThemeProvider>
+      </BrandProvider>
     </SafeAreaProvider>
   );
 }

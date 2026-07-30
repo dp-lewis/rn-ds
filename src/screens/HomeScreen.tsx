@@ -11,6 +11,7 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { fetchTopStories } from '../api/newsApi';
+import BrandSwitcher from '../components/BrandSwitcher';
 import StoryTile from '../components/StoryTile';
 import type { RootStackScreenProps } from '../navigation/types';
 import { makeStyles, useTheme } from '../theme';
@@ -125,6 +126,7 @@ export default function HomeScreen({ navigation }: RootStackScreenProps<'Home'>)
         ListHeaderComponent={
           <View style={styles.header}>
             <Masthead />
+            <BrandSwitcher />
             {lead && (
               <>
                 <SectionLabel>TOP STORY</SectionLabel>

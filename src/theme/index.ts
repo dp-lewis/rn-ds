@@ -10,8 +10,15 @@
  * stop propagating.
  */
 
-export { BRAND_IDS, DEFAULT_BRAND, brands, type BrandId } from './primitives';
+export {
+  BRAND_IDS,
+  BRAND_OPTIONS,
+  DEFAULT_BRAND,
+  brands,
+  type BrandId,
+} from './primitives';
 export type { ThemeMode } from './alias';
 export { themes, type Theme } from './createTheme';
 export { ThemeProvider, useTheme } from './ThemeProvider';
+export { BrandProvider, useBrand } from './BrandProvider';
 export { makeStyles } from './makeStyles';

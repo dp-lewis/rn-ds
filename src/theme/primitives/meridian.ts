@@ -6,6 +6,7 @@ import type { BrandPrimitives } from './types';
 export const meridian: BrandPrimitives = {
   id: 'meridian',
   name: 'MERIDIAN',
+  shortName: 'Meridian',
   fontFamily: {
     // Undefined on purpose: not setting fontFamily is what gets you the
     // native face (SF on iOS, Roboto on Android).

@@ -44,8 +44,10 @@ export type FontFamily = {
 
 export type BrandPrimitives = {
   id: string;
-  /** Masthead shown in the UI. */
+  /** Masthead shown at the top of the feed. */
   name: string;
+  /** Compact label for tight UI like the brand switcher. */
+  shortName: string;
   fontFamily: {
     /** Wordmark and headlines. Undefined entries fall back to the platform sans. */
     display: FontFamily;

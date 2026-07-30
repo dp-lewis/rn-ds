@@ -7,6 +7,7 @@ import type { BrandPrimitives } from './types';
 export const pulse: BrandPrimitives = {
   id: 'pulse',
   name: 'PULSE',
+  shortName: 'Pulse',
   fontFamily: {
     display: {},
     mono: { ios: 'Menlo', android: 'monospace', default: 'Menlo' },
