@@ -1,0 +1,95 @@
+[
+  {
+    "id": "wr-4417",
+    "category": "World",
+    "headline": "EU brokers emergency grid-sharing deal as heatwave strains supply",
+    "summary": "Twenty-seven member states agreed overnight to pool reserve capacity for the rest of the summer, ending a week of closed-door talks in Brussels.",
+    "dateline": "Brussels",
+    "filedAt": "2026-07-31T06:12:00Z",
+    "readMinutes": 5,
+    "imageUrl": "https://picsum.photos/seed/meridian-grid/900/560",
+    "breaking": true,
+    "author": "Aisling Moreau",
+    "body": [
+      "Energy ministers signed the agreement at 04:40, nine hours past the deadline they had set themselves. Under its terms, any member state whose reserve margin falls below three percent can call on capacity from two designated neighbours, at a price fixed in advance rather than set on the spot market.",
+      "The mechanism is temporary. It expires on 30 September unless the Council votes to extend it, and it covers electricity only — an earlier draft that would have included gas storage was dropped on Tuesday after objections from four states.",
+      "Grid operators had been warning since June that the simultaneous heatwave across the southern member states was producing demand peaks the interconnectors were never sized for. On 19 July, Italy and Greece both came within two percent of their reserve floors on the same afternoon.",
+      "\"We have built a single market for electricity and kept twenty-seven national emergency plans,\" said one official involved in the talks, who was not authorised to speak publicly. \"This is the first time the plans talk to each other.\"",
+      "Implementation falls to ENTSO-E, the association of transmission operators, which has been given until 14 August to publish the technical protocol. Several operators have privately questioned whether that is achievable."
+    ]
+  },
+  {
+    "id": "wr-4418",
+    "category": "Business",
+    "headline": "Chip orders cool for a third straight quarter",
+    "summary": "Foundry bookings in Singapore and Taipei slipped again, the longest run of declines since 2019.",
+    "dateline": "Singapore",
+    "filedAt": "2026-07-31T05:40:00Z",
+    "readMinutes": 3,
+    "imageUrl": "https://picsum.photos/seed/meridian-chips/400/400",
+    "breaking": false,
+    "author": "Daniel Okonjo",
+    "body": [
+      "New orders fell 4.1 percent against the previous quarter, according to figures published this morning by the regional semiconductor association. It is the third consecutive decline and the longest such run since 2019.",
+      "The weakness is concentrated in mature nodes — the 28nm and above processes that go into cars, appliances and industrial controllers. Leading-edge capacity remains sold out through next year.",
+      "Two foundries have now pushed back capital spending they had previously committed to for 2027. A third said it would keep its schedule but shift a planned mature-node line to advanced packaging instead.",
+      "Analysts are split on whether this is a cycle or a floor. The optimistic reading is that customers over-ordered through 2024 and are still working inventory down. The pessimistic one is that automotive demand has structurally shifted, and the mature-node capacity built during the shortage will not find buyers."
+    ]
+  },
+  {
+    "id": "wr-4419",
+    "category": "Science",
+    "headline": "Iceland taps a deeper well, and the physics get strange",
+    "summary": "Engineers drilled into supercritical water at 4.5km. The borehole is now producing ten times the energy of a conventional one.",
+    "dateline": "Reykjavik",
+    "filedAt": "2026-07-31T04:55:00Z",
+    "readMinutes": 7,
+    "imageUrl": "https://picsum.photos/seed/meridian-well/400/400",
+    "breaking": false,
+    "author": "Freyja Halldorsdottir",
+    "body": [
+      "At 4,500 metres the drill reached water at 452°C and 300 bar. At that temperature and pressure it is neither liquid nor steam but supercritical — a phase that carries far more energy per kilogram than either, and behaves like neither.",
+      "The well is producing roughly ten times the output of a conventional geothermal borehole on the same field. One well of this kind could replace a small cluster of ordinary ones, which changes the arithmetic of every geothermal project on the island.",
+      "The engineering problem is that supercritical water dissolves things. It attacks well casing, carries silica and chloride in solution, and deposits them somewhere less convenient as it cools. An earlier attempt at a nearby site was abandoned in 2017 when the casing failed.",
+      "This well has run for eleven months. The team has been swapping out sections of the upper casing on a rotation and says corrosion is tracking below its own worst-case model, though above the case it had hoped for.",
+      "A second borehole is planned for next spring. If it performs similarly, the operator intends to apply for a commercial licence — the first anywhere for a supercritical well."
+    ]
+  },
+  {
+    "id": "wr-4420",
+    "category": "Climate",
+    "headline": "Nairobi's flood maps were redrawn. Insurers redrew them again",
+    "summary": "The city published new risk boundaries in March. Three major underwriters are already pricing to a different set.",
+    "dateline": "Nairobi",
+    "filedAt": "2026-07-31T03:20:00Z",
+    "readMinutes": 6,
+    "imageUrl": "https://picsum.photos/seed/meridian-flood/400/400",
+    "breaking": false,
+    "author": "Wanjiru Kamau",
+    "body": [
+      "The county's revised flood maps, published in March, moved roughly 40,000 households out of the highest risk band. The revision followed three years of drainage works along the Ngong and Nairobi rivers.",
+      "Three of the largest underwriters operating in the city have not adopted the new boundaries. Their internal models still price most of those households as high risk, and in two cases the premium has gone up since March rather than down.",
+      "The insurers' position is that drainage capacity is only one input, and that the rainfall assumptions underlying the county maps are drawn from a period that no longer describes the climate. One risk officer put it more bluntly: the maps model the river, not the storm.",
+      "For residents the effect is that an official reclassification has produced no saving. Several have appealed, and the county has said it is reviewing whether it can compel disclosure of the models being used instead.",
+      "The dispute matters beyond Nairobi. Cities across the region are investing in drainage on the assumption that reduced risk will show up in insurance pricing — and this is the first large test of whether it does."
+    ]
+  },
+  {
+    "id": "wr-4421",
+    "category": "Culture",
+    "headline": "Seoul's late-night bookshops are outlasting the cafes",
+    "summary": "Rents pushed out the coffee chains. The 24-hour reading rooms that replaced them are turning a profit.",
+    "dateline": "Seoul",
+    "filedAt": "2026-07-31T02:05:00Z",
+    "readMinutes": 4,
+    "imageUrl": "https://picsum.photos/seed/meridian-books/400/400",
+    "breaking": false,
+    "author": "Ha-eun Seo",
+    "body": [
+      "There are now sixty-one bookshops in Seoul that stay open past midnight, up from nine in 2021. Most occupy premises that were coffee shops until the rent reviews of 2023.",
+      "The economics are counter-intuitive. Books carry a thinner margin than coffee and turn over far more slowly. What makes the model work is that the shops sell the seat rather than the stock — a nightly or monthly rate for a desk, with the books as the reason to choose that desk over a library.",
+      "Owners describe a customer base of shift workers, students and people who simply do not want to be at home. Peak hours are between 22:00 and 02:00, which is precisely when the cafes were emptiest and paying the same rent.",
+      "Whether it survives the next rent cycle is another question. Three of the largest have signed ten-year leases specifically to find out."
+    ]
+  }
+]
