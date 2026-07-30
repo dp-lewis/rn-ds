@@ -2,10 +2,8 @@ import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
 import { View } from 'react-native';
 
 import Eyebrow from './Eyebrow';
-import { categoryColors, colors, spacing } from '../theme';
-import type { Category } from '../types';
-
-const CATEGORIES = Object.keys(categoryColors) as Category[];
+import { palettes, spacing } from '../theme';
+import { CATEGORIES } from '../types';
 
 const meta = {
   title: 'Components/Eyebrow',
@@ -15,7 +13,7 @@ const meta = {
     variant: {
       control: 'inline-radio',
       options: ['inline', 'pill'],
-      description: 'Tinted text for light surfaces, filled chip for imagery.',
+      description: 'Tinted text for app surfaces, filled chip for imagery.',
     },
     breaking: { control: 'boolean' },
   },
@@ -35,7 +33,6 @@ export const Inline: SBStory = {};
 /** Used over photography, where a tinted desk colour would not survive. */
 export const Pill: SBStory = {
   args: { variant: 'pill' },
-  parameters: { backgrounds: { default: 'dark' } },
 };
 
 /** Signal red outranks the desk colour and relabels. */
@@ -43,7 +40,10 @@ export const Breaking: SBStory = {
   args: { breaking: true },
 };
 
-/** The full desk palette. Add a category to the domain and it appears here. */
+/**
+ * The full desk palette. Flip the toolbar theme to check both modes — the
+ * inline colours differ between them, the pill colours deliberately do not.
+ */
 export const AllCategories: SBStory = {
   render: (args) => (
     <View style={{ gap: spacing.md }}>
@@ -54,11 +54,18 @@ export const AllCategories: SBStory = {
   ),
 };
 
-/** Same palette as filled chips, checked against a dark ground. */
+/** Pills always sit on a dark scrim, so they are checked against one. */
 export const AllCategoriesAsPills: SBStory = {
   args: { variant: 'pill' },
   render: (args) => (
-    <View style={{ gap: spacing.md, backgroundColor: colors.ink, padding: spacing.lg }}>
+    <View
+      style={{
+        gap: spacing.md,
+        backgroundColor: palettes.dark.surface.page,
+        padding: spacing.lg,
+        borderRadius: 8,
+      }}
+    >
       {CATEGORIES.map((category) => (
         <Eyebrow key={category} {...args} category={category} />
       ))}

@@ -2,7 +2,6 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useCallback, useEffect, useState } from 'react';
 import {
   ActivityIndicator,
-  Image,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -13,19 +12,27 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { fetchStoryById } from '../api/newsApi';
 import Eyebrow from '../components/Eyebrow';
+import StoryImage from '../components/StoryImage';
 import WireLine from '../components/WireLine';
 import type { RootStackScreenProps } from '../navigation/types';
-import { colors, fonts, radius, spacing, typography } from '../theme';
+import { makeStyles, useTheme } from '../theme';
 import type { Story } from '../types';
 
 function BackButton({ onPress, top }: { onPress: () => void; top: number }) {
+  const theme = useTheme();
+  const styles = useStyles();
+
   return (
     <Pressable
       onPress={onPress}
       accessibilityRole="button"
       accessibilityLabel="Back to top stories"
       hitSlop={8}
-      style={({ pressed }) => [styles.back, { top }, pressed && styles.backPressed]}
+      style={({ pressed }) => [
+        styles.back,
+        { top },
+        pressed && { opacity: theme.opacity.pressed },
+      ]}
     >
       <Text style={styles.backGlyph}>←</Text>
     </Pressable>
@@ -35,6 +42,8 @@ function BackButton({ onPress, top }: { onPress: () => void; top: number }) {
 export default function ArticleScreen({ route, navigation }: RootStackScreenProps<'Article'>) {
   const { storyId } = route.params;
   const insets = useSafeAreaInsets();
+  const theme = useTheme();
+  const styles = useStyles();
 
   const [story, setStory] = useState<Story | null>(null);
   const [loading, setLoading] = useState(true);
@@ -65,7 +74,7 @@ export default function ArticleScreen({ route, navigation }: RootStackScreenProp
   if (loading) {
     return (
       <View style={[styles.screen, styles.centered]}>
-        <ActivityIndicator color={colors.inkMuted} />
+        <ActivityIndicator color={theme.color.text.muted} />
       </View>
     );
   }
@@ -77,7 +86,10 @@ export default function ArticleScreen({ route, navigation }: RootStackScreenProp
         <Pressable
           onPress={goBack}
           accessibilityRole="button"
-          style={({ pressed }) => [styles.retry, pressed && styles.backPressed]}
+          style={({ pressed }) => [
+            styles.retry,
+            pressed && { opacity: theme.opacity.pressed },
+          ]}
         >
           <Text style={styles.retryText}>BACK TO TOP STORIES</Text>
         </Pressable>
@@ -88,24 +100,16 @@ export default function ArticleScreen({ route, navigation }: RootStackScreenProp
   return (
     <View style={styles.screen}>
       <ScrollView
-        contentContainerStyle={{ paddingBottom: insets.bottom + spacing.xxxl }}
+        contentContainerStyle={{ paddingBottom: insets.bottom + theme.spacing.xxxl }}
         showsVerticalScrollIndicator={false}
       >
         <View style={styles.hero}>
-          <Image
-            source={{ uri: story.imageUrl }}
-            style={StyleSheet.absoluteFill}
-            resizeMode="cover"
-            accessible={false}
-          />
+          <StoryImage uri={story.imageUrl} style={StyleSheet.absoluteFill} />
           {/* Keeps the back button readable whatever the photo is doing. */}
-          <LinearGradient
-            colors={['rgba(0,0,0,0.45)', 'transparent']}
-            style={styles.heroScrim}
-          />
+          <LinearGradient colors={theme.scrims.hero} style={styles.heroScrim} />
           {/* Lives inside the hero so it scrolls away rather than floating
               over the body copy. */}
-          <BackButton onPress={goBack} top={insets.top + spacing.sm} />
+          <BackButton onPress={goBack} top={insets.top + theme.spacing.sm} />
         </View>
 
         <View style={styles.body}>
@@ -136,20 +140,20 @@ export default function ArticleScreen({ route, navigation }: RootStackScreenProp
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((t) => ({
   screen: {
     flex: 1,
-    backgroundColor: colors.paper,
+    backgroundColor: t.color.surface.page,
   },
   centered: {
     alignItems: 'center',
     justifyContent: 'center',
-    gap: spacing.lg,
+    gap: t.spacing.lg,
   },
 
   hero: {
     aspectRatio: 16 / 10,
-    backgroundColor: colors.imagePlaceholder,
+    backgroundColor: t.color.surface.image,
   },
   heroScrim: {
     position: 'absolute',
@@ -161,76 +165,73 @@ const styles = StyleSheet.create({
 
   back: {
     position: 'absolute',
-    left: spacing.lg,
-    width: 40,
-    height: 40,
-    borderRadius: 20,
+    left: t.spacing.lg,
+    width: t.sizes.backButton,
+    height: t.sizes.backButton,
+    borderRadius: t.radius.pill,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'rgba(0,0,0,0.55)',
   },
-  backPressed: {
-    opacity: 0.6,
-  },
   backGlyph: {
     fontSize: 20,
     lineHeight: 24,
-    color: colors.inkInverse,
+    color: t.color.text.inverse,
   },
 
   body: {
-    padding: spacing.xl,
-    gap: spacing.lg,
+    padding: t.spacing.xl,
+    gap: t.spacing.lg,
   },
   headline: {
-    ...typography.articleHeadline,
-    color: colors.ink,
+    ...t.typography.articleHeadline,
+    color: t.color.text.primary,
   },
   standfirst: {
-    ...typography.standfirst,
-    color: colors.inkMuted,
+    ...t.typography.standfirst,
+    color: t.color.text.muted,
   },
   rail: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     flexWrap: 'wrap',
-    gap: spacing.sm,
-    paddingVertical: spacing.md,
+    gap: t.spacing.sm,
+    paddingVertical: t.spacing.md,
     borderTopWidth: StyleSheet.hairlineWidth,
     borderBottomWidth: StyleSheet.hairlineWidth,
-    borderColor: colors.rule,
+    borderColor: t.color.border.hairline,
   },
   byline: {
-    ...typography.byline,
-    color: colors.ink,
+    ...t.typography.byline,
+    color: t.color.text.primary,
   },
   paragraph: {
-    ...typography.paragraph,
-    color: colors.ink,
+    ...t.typography.paragraph,
+    color: t.color.text.primary,
   },
   ends: {
-    ...typography.wire,
-    fontFamily: fonts.mono,
-    color: colors.inkMuted,
+    ...t.typography.wire,
+    fontFamily: t.fonts.mono,
+    color: t.color.text.muted,
     textAlign: 'center',
-    marginTop: spacing.sm,
+    marginTop: t.spacing.sm,
   },
 
   stateText: {
-    ...typography.summary,
-    color: colors.inkMuted,
+    ...t.typography.summary,
+    color: t.color.text.muted,
   },
   retry: {
     borderWidth: StyleSheet.hairlineWidth,
-    borderColor: colors.ink,
-    borderRadius: radius.sm,
-    paddingHorizontal: spacing.lg,
-    paddingVertical: spacing.sm,
+    borderColor: t.color.text.primary,
+    borderRadius: t.radius.sm,
+    paddingHorizontal: t.spacing.lg,
+    paddingVertical: t.spacing.sm,
   },
   retryText: {
-    ...typography.eyebrow,
-    fontFamily: fonts.mono,
-    color: colors.ink,
+    ...t.typography.eyebrow,
+    fontFamily: t.fonts.mono,
+    color: t.color.text.primary,
   },
-});
+}));

@@ -1,23 +1,23 @@
+import { parseStory } from './parseStory';
 import storiesJson from '../data/stories.json';
 import type { Story } from '../types';
 
 /**
- * Stand-in for a real news API. Everything the screen consumes goes through
+ * Stand-in for a real news API. Everything the screens consume goes through
  * here, so swapping in a live endpoint later means editing this file only —
- * `fetchTopStories` keeps its signature and the screen never changes.
+ * the exported functions keep their signatures and no screen changes.
  */
 
 const LATENCY_MS = 600;
 
 const delay = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms));
 
-/**
- * Returns today's wire, newest first. The lead story is the first item.
- */
+/** Validated once at module load, the same way a response would be. */
+const stories: Story[] = (storiesJson as unknown[]).map(parseStory);
+
+/** Returns today's wire, newest first. The lead story is the first item. */
 export async function fetchTopStories(): Promise<Story[]> {
   await delay(LATENCY_MS);
-
-  const stories = storiesJson as Story[];
 
   return [...stories].sort(
     (a, b) => new Date(b.filedAt).getTime() - new Date(a.filedAt).getTime(),
@@ -31,7 +31,7 @@ export async function fetchTopStories(): Promise<Story[]> {
 export async function fetchStoryById(id: string): Promise<Story> {
   await delay(LATENCY_MS / 2);
 
-  const story = (storiesJson as Story[]).find((s) => s.id === id);
+  const story = stories.find((s) => s.id === id);
 
   if (!story) {
     throw new Error(`No story filed under ${id}`);

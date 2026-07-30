@@ -1,8 +1,13 @@
 /**
- * Desks a story can be filed to. This is the domain's list — `theme.ts` maps
- * it to colours, so adding one here is a compile error until it gets a colour.
+ * Desks a story can be filed to. This is the domain's list — the theme maps it
+ * to colours, so adding one here is a compile error until it gets a colour.
+ *
+ * Declared as a const array so the same list is available at runtime for
+ * validating incoming data, not just to the type checker.
  */
-export type Category = 'World' | 'Business' | 'Science' | 'Climate' | 'Culture';
+export const CATEGORIES = ['World', 'Business', 'Science', 'Climate', 'Culture'] as const;
+
+export type Category = (typeof CATEGORIES)[number];
 
 export type Story = {
   id: string;

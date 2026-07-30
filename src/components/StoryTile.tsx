@@ -1,9 +1,11 @@
 import { LinearGradient } from 'expo-linear-gradient';
-import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import { memo } from 'react';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import Eyebrow from './Eyebrow';
+import StoryImage from './StoryImage';
 import WireLine from './WireLine';
-import { colors, radius, spacing, typography } from '../theme';
+import { makeStyles, useTheme } from '../theme';
 import type { Story } from '../types';
 
 export type StoryTileVariant = 'lead' | 'standard';
@@ -18,7 +20,62 @@ type Props = {
   onPress?: (story: Story) => void;
 };
 
-export default function StoryTile({ story, variant = 'standard', onPress }: Props) {
+function StoryTile({ story, variant = 'standard', onPress }: Props) {
+  const theme = useTheme();
+  const styles = useStyles();
+
+  const content =
+    variant === 'lead' ? (
+      <>
+        <View style={styles.leadImageWrap}>
+          <StoryImage uri={story.imageUrl} style={StyleSheet.absoluteFill} />
+          <LinearGradient
+            colors={theme.scrims.lead}
+            locations={[0, 0.45, 1]}
+            style={StyleSheet.absoluteFill}
+          />
+          <View style={styles.leadOverlay}>
+            {/* Pill rather than inline: desk colours are tuned for app
+                surfaces and would not hold up over a photograph. */}
+            <Eyebrow category={story.category} breaking={story.breaking} variant="pill" />
+            <Text style={styles.leadHeadline}>{story.headline}</Text>
+          </View>
+        </View>
+
+        <View style={styles.leadFooter}>
+          <Text style={styles.summary} numberOfLines={2}>
+            {story.summary}
+          </Text>
+          <WireLine
+            dateline={story.dateline}
+            filedAt={story.filedAt}
+            readMinutes={story.readMinutes}
+          />
+        </View>
+      </>
+    ) : (
+      <View style={styles.standardRow}>
+        <View style={styles.standardText}>
+          <Eyebrow category={story.category} breaking={story.breaking} />
+          <Text style={styles.headline} numberOfLines={3}>
+            {story.headline}
+          </Text>
+          <WireLine
+            dateline={story.dateline}
+            filedAt={story.filedAt}
+            readMinutes={story.readMinutes}
+          />
+        </View>
+        <StoryImage uri={story.imageUrl} style={styles.thumb} />
+      </View>
+    );
+
+  // Without a handler this is not a button, so it should not announce as one
+  // or show press feedback.
+  if (!onPress) {
+    return <View style={styles.card}>{content}</View>;
+  }
+
   const accessibilityLabel = `${
     story.breaking ? 'Breaking. ' : ''
   }${story.category}. ${story.headline}. Filed from ${story.dateline}, ${
@@ -27,129 +84,74 @@ export default function StoryTile({ story, variant = 'standard', onPress }: Prop
 
   return (
     <Pressable
-      onPress={() => onPress?.(story)}
+      onPress={() => onPress(story)}
       accessibilityRole="button"
       accessibilityLabel={accessibilityLabel}
-      android_ripple={{ color: colors.rule }}
-      style={({ pressed }) => [styles.card, pressed && styles.cardPressed]}
+      android_ripple={{ color: theme.color.border.hairline }}
+      style={({ pressed }) => [styles.card, pressed && { opacity: theme.opacity.pressed }]}
     >
-      {variant === 'lead' ? (
-        <>
-          <View style={styles.leadImageWrap}>
-            <Image
-              source={{ uri: story.imageUrl }}
-              style={StyleSheet.absoluteFill}
-              resizeMode="cover"
-              accessible={false}
-            />
-            {/* Scrim so the headline stays legible over any photo. */}
-            <LinearGradient
-              colors={['transparent', 'rgba(0,0,0,0.15)', 'rgba(0,0,0,0.82)']}
-              locations={[0, 0.45, 1]}
-              style={StyleSheet.absoluteFill}
-            />
-            <View style={styles.leadOverlay}>
-              {/* Pill rather than inline: desk colours are tuned for white
-                  surfaces and would not hold up over a photograph. */}
-              <Eyebrow
-                category={story.category}
-                breaking={story.breaking}
-                variant="pill"
-              />
-              <Text style={styles.leadHeadline}>{story.headline}</Text>
-            </View>
-          </View>
-
-          <View style={styles.leadFooter}>
-            <Text style={styles.summary} numberOfLines={2}>
-              {story.summary}
-            </Text>
-            <WireLine
-              dateline={story.dateline}
-              filedAt={story.filedAt}
-              readMinutes={story.readMinutes}
-            />
-          </View>
-        </>
-      ) : (
-        <View style={styles.standardRow}>
-          <View style={styles.standardText}>
-            <Eyebrow category={story.category} breaking={story.breaking} />
-            <Text style={styles.headline} numberOfLines={3}>
-              {story.headline}
-            </Text>
-            <WireLine
-              dateline={story.dateline}
-              filedAt={story.filedAt}
-              readMinutes={story.readMinutes}
-            />
-          </View>
-          <Image
-            source={{ uri: story.imageUrl }}
-            style={styles.thumb}
-            resizeMode="cover"
-            accessible={false}
-          />
-        </View>
-      )}
+      {content}
     </Pressable>
   );
 }
 
-const styles = StyleSheet.create({
+/**
+ * Memoised because the feed re-renders on every pull-to-refresh. Callers
+ * should pass a stable onPress (useCallback) for this to bite.
+ */
+export default memo(StoryTile);
+
+const useStyles = makeStyles((t) => ({
   card: {
-    backgroundColor: colors.card,
-    borderRadius: radius.lg,
+    backgroundColor: t.color.surface.card,
+    borderRadius: t.radius.lg,
     overflow: 'hidden',
     borderWidth: StyleSheet.hairlineWidth,
-    borderColor: colors.rule,
-  },
-  cardPressed: {
-    opacity: 0.72,
+    borderColor: t.color.border.hairline,
   },
 
   // Lead
   leadImageWrap: {
     aspectRatio: 16 / 10,
-    backgroundColor: colors.imagePlaceholder,
+    backgroundColor: t.color.surface.image,
     justifyContent: 'flex-end',
   },
   leadOverlay: {
-    padding: spacing.lg,
-    gap: spacing.sm,
+    padding: t.spacing.lg,
+    gap: t.spacing.sm,
   },
   leadHeadline: {
-    ...typography.leadHeadline,
-    color: colors.inkInverse,
+    ...t.typography.leadHeadline,
+    color: t.color.text.inverse,
   },
   leadFooter: {
-    padding: spacing.lg,
-    gap: spacing.sm,
+    padding: t.spacing.lg,
+    gap: t.spacing.sm,
   },
+
   // Standard
   standardRow: {
     flexDirection: 'row',
     alignItems: 'flex-start',
-    gap: spacing.md,
-    padding: spacing.md,
+    gap: t.spacing.md,
+    padding: t.spacing.md,
   },
   standardText: {
     flex: 1,
-    gap: spacing.sm,
+    gap: t.spacing.sm,
   },
   thumb: {
-    width: 92,
-    height: 92,
-    borderRadius: radius.md,
-    backgroundColor: colors.imagePlaceholder,
+    width: t.sizes.thumb,
+    height: t.sizes.thumb,
+    borderRadius: t.radius.md,
   },
 
   headline: {
-    ...typography.headline,
-    color: colors.ink,
+    ...t.typography.headline,
+    color: t.color.text.primary,
   },
   summary: {
-    ...typography.summary,
-    color: colors.inkMuted,
+    ...t.typography.summary,
+    color: t.color.text.muted,
   },
-});
+}));

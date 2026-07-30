@@ -1,7 +1,7 @@
-import { StyleSheet, Text } from 'react-native';
+import { Text } from 'react-native';
 
 import { formatFiled } from '../lib/time';
-import { colors, fonts, typography } from '../theme';
+import { makeStyles } from '../theme';
 
 type Props = {
   /** Where the correspondent filed from, e.g. "Brussels". */
@@ -17,6 +17,8 @@ type Props = {
  * DATELINE · FILED 06:12 · 5 MIN
  */
 export default function WireLine({ dateline, filedAt, readMinutes }: Props) {
+  const styles = useStyles();
+
   return (
     <Text style={styles.wire} numberOfLines={1}>
       {dateline.toUpperCase()}
@@ -28,13 +30,14 @@ export default function WireLine({ dateline, filedAt, readMinutes }: Props) {
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((t) => ({
   wire: {
-    ...typography.wire,
-    fontFamily: fonts.mono,
-    color: colors.inkMuted,
+    ...t.typography.wire,
+    fontFamily: t.fonts.mono,
+    color: t.color.text.muted,
   },
+  /** text.faint, not border.hairline — the old border tone was 1.32:1. */
   divider: {
-    color: colors.rule,
+    color: t.color.text.faint,
   },
-});
+}));

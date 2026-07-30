@@ -13,7 +13,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { fetchTopStories } from '../api/newsApi';
 import StoryTile from '../components/StoryTile';
 import type { RootStackScreenProps } from '../navigation/types';
-import { colors, fonts, radius, spacing, typography } from '../theme';
+import { makeStyles, useTheme } from '../theme';
 import type { Story } from '../types';
 
 const DAYS = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
@@ -25,6 +25,8 @@ function formatToday(date: Date): string {
 }
 
 function Masthead() {
+  const styles = useStyles();
+
   return (
     <View style={styles.masthead}>
       <Text style={styles.wordmark}>MERIDIAN</Text>
@@ -34,11 +36,14 @@ function Masthead() {
 }
 
 function SectionLabel({ children }: { children: string }) {
+  const styles = useStyles();
   return <Text style={styles.sectionLabel}>{children}</Text>;
 }
 
 export default function HomeScreen({ navigation }: RootStackScreenProps<'Home'>) {
   const insets = useSafeAreaInsets();
+  const theme = useTheme();
+  const styles = useStyles();
 
   const [stories, setStories] = useState<Story[]>([]);
   const [loading, setLoading] = useState(true);
@@ -72,7 +77,7 @@ export default function HomeScreen({ navigation }: RootStackScreenProps<'Home'>)
   if (loading) {
     return (
       <View style={[styles.screen, styles.centered]}>
-        <ActivityIndicator color={colors.inkMuted} />
+        <ActivityIndicator color={theme.color.text.muted} />
         <Text style={styles.stateText}>Pulling today's wire</Text>
       </View>
     );
@@ -85,7 +90,10 @@ export default function HomeScreen({ navigation }: RootStackScreenProps<'Home'>)
         <Pressable
           onPress={onRefresh}
           accessibilityRole="button"
-          style={({ pressed }) => [styles.retry, pressed && styles.retryPressed]}
+          style={({ pressed }) => [
+            styles.retry,
+            pressed && { opacity: theme.opacity.pressed },
+          ]}
         >
           <Text style={styles.retryText}>TRY AGAIN</Text>
         </Pressable>
@@ -102,15 +110,15 @@ export default function HomeScreen({ navigation }: RootStackScreenProps<'Home'>)
         keyExtractor={(story) => story.id}
         contentContainerStyle={[
           styles.listContent,
-          { paddingBottom: insets.bottom + spacing.xxxl },
+          { paddingBottom: insets.bottom + theme.spacing.xxxl },
         ]}
-        ItemSeparatorComponent={() => <View style={{ height: spacing.md }} />}
+        ItemSeparatorComponent={() => <View style={{ height: theme.spacing.md }} />}
         showsVerticalScrollIndicator={false}
         refreshControl={
           <RefreshControl
             refreshing={refreshing}
             onRefresh={onRefresh}
-            tintColor={colors.inkMuted}
+            tintColor={theme.color.text.muted}
           />
         }
         ListHeaderComponent={
@@ -131,61 +139,58 @@ export default function HomeScreen({ navigation }: RootStackScreenProps<'Home'>)
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((t) => ({
   screen: {
     flex: 1,
-    backgroundColor: colors.paper,
+    backgroundColor: t.color.surface.page,
   },
   centered: {
     alignItems: 'center',
     justifyContent: 'center',
-    gap: spacing.md,
+    gap: t.spacing.md,
   },
   listContent: {
-    paddingHorizontal: spacing.lg,
+    paddingHorizontal: t.spacing.lg,
   },
   header: {
-    gap: spacing.md,
+    gap: t.spacing.md,
   },
   masthead: {
     flexDirection: 'row',
     alignItems: 'baseline',
     justifyContent: 'space-between',
-    paddingTop: spacing.lg,
-    paddingBottom: spacing.sm,
+    paddingTop: t.spacing.lg,
+    paddingBottom: t.spacing.sm,
   },
   wordmark: {
-    ...typography.wordmark,
-    color: colors.ink,
+    ...t.typography.wordmark,
+    color: t.color.text.primary,
   },
   mastheadDate: {
-    ...typography.wire,
-    fontFamily: fonts.mono,
-    color: colors.inkMuted,
+    ...t.typography.wire,
+    fontFamily: t.fonts.mono,
+    color: t.color.text.muted,
   },
   sectionLabel: {
-    ...typography.eyebrow,
-    fontFamily: fonts.mono,
-    color: colors.inkMuted,
-    marginTop: spacing.sm,
+    ...t.typography.eyebrow,
+    fontFamily: t.fonts.mono,
+    color: t.color.text.muted,
+    marginTop: t.spacing.sm,
   },
   stateText: {
-    ...typography.summary,
-    color: colors.inkMuted,
+    ...t.typography.summary,
+    color: t.color.text.muted,
   },
   retry: {
     borderWidth: StyleSheet.hairlineWidth,
-    borderColor: colors.ink,
-    borderRadius: radius.sm,
-    paddingHorizontal: spacing.lg,
-    paddingVertical: spacing.sm,
-  },
-  retryPressed: {
-    opacity: 0.6,
+    borderColor: t.color.text.primary,
+    borderRadius: t.radius.sm,
+    paddingHorizontal: t.spacing.lg,
+    paddingVertical: t.spacing.sm,
   },
   retryText: {
-    ...typography.eyebrow,
-    fontFamily: fonts.mono,
-    color: colors.ink,
+    ...t.typography.eyebrow,
+    fontFamily: t.fonts.mono,
+    color: t.color.text.primary,
   },
-});
+}));

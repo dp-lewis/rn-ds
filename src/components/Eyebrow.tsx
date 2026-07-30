@@ -1,6 +1,6 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 
-import { categoryColors, colors, radius, spacing, typography } from '../theme';
+import { categoryOnImage, makeStyles, signalOnImage, useTheme } from '../theme';
 import type { Category } from '../types';
 
 export type EyebrowVariant = 'inline' | 'pill';
@@ -10,46 +10,60 @@ type Props = {
   /** Signal red outranks the desk colour and relabels to BREAKING. */
   breaking?: boolean;
   /**
-   * 'inline' tints the text itself — for light surfaces. 'pill' fills the
-   * chip and reverses the text, which is what stays legible over imagery.
+   * 'inline' tints the text itself — for app surfaces. 'pill' fills the chip
+   * and reverses the text, which is what stays legible over imagery.
    */
   variant?: EyebrowVariant;
 };
 
 /** Desk label with its marker dot. */
-export default function Eyebrow({ category, breaking = false, variant = 'inline' }: Props) {
-  const tint = breaking ? colors.signal : categoryColors[category];
-  const label = breaking ? 'BREAKING' : category.toUpperCase();
+export default function Eyebrow({
+  category,
+  breaking = false,
+  variant = 'inline',
+}: Props) {
+  const theme = useTheme();
+  const styles = useStyles();
   const isPill = variant === 'pill';
+
+  // Pills always sit on a dark scrim, so they take the fixed on-image palette
+  // rather than the themed one, which is tuned for app surfaces.
+  const tint = isPill
+    ? breaking
+      ? signalOnImage
+      : categoryOnImage[category]
+    : breaking
+      ? theme.color.signal
+      : theme.color.category[category];
+
+  const foreground = isPill ? theme.color.text.inverse : tint;
 
   return (
     <View style={[styles.row, isPill && [styles.pill, { backgroundColor: tint }]]}>
-      <View
-        style={[styles.dot, { backgroundColor: isPill ? colors.inkInverse : tint }]}
-      />
-      <Text style={[styles.label, { color: isPill ? colors.inkInverse : tint }]}>
-        {label}
+      <View style={[styles.dot, { backgroundColor: foreground }]} />
+      <Text style={[styles.label, { color: foreground }]}>
+        {breaking ? 'BREAKING' : category.toUpperCase()}
       </Text>
     </View>
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((t) => ({
   row: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: spacing.xs + 2,
+    gap: t.spacing.xs,
   },
   pill: {
     alignSelf: 'flex-start',
-    paddingHorizontal: spacing.sm,
-    paddingVertical: 5,
-    borderRadius: radius.sm,
+    paddingHorizontal: t.spacing.sm,
+    paddingVertical: t.spacing.xxs + 1,
+    borderRadius: t.radius.sm,
   },
   dot: {
-    width: 6,
-    height: 6,
-    borderRadius: 3,
+    width: t.sizes.eyebrowDot,
+    height: t.sizes.eyebrowDot,
+    borderRadius: t.sizes.eyebrowDot / 2,
   },
-  label: typography.eyebrow,
-});
+  label: t.typography.eyebrow,
+}));
