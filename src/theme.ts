@@ -1,5 +1,7 @@
 import { Platform } from 'react-native';
 
+import type { Category } from './types';
+
 /**
  * Design tokens. Components should never hard-code a hex value or a raw
  * pixel gap — pull it from here so the whole app moves together.
@@ -21,16 +23,19 @@ export const colors = {
   signal: '#D92B1F',
 } as const;
 
-/** One colour per desk, used for the eyebrow label and its marker dot. */
-export const categoryColors = {
+/**
+ * One colour per desk, used for the eyebrow label and its marker dot. Typed
+ * against the domain's Category union, so a new desk will not compile until
+ * it has a colour here. Every value clears 4.5:1 both as text on white and as
+ * a filled pill behind white text.
+ */
+export const categoryColors: Record<Category, string> = {
   World: '#2340C8',
   Business: '#0F7A6B',
   Science: '#6B3FA0',
   Climate: '#2E7D32',
   Culture: '#C2185B',
-} as const;
-
-export type Category = keyof typeof categoryColors;
+};
 
 /**
  * Headlines intentionally ride the platform sans (SF on iOS, Roboto on

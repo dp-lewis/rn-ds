@@ -49,12 +49,13 @@ export default function StoryTile({ story, variant = 'standard', onPress }: Prop
               style={StyleSheet.absoluteFill}
             />
             <View style={styles.leadOverlay}>
-              {story.breaking && (
-                <View style={styles.breakingPill}>
-                  <View style={styles.breakingDot} />
-                  <Text style={styles.breakingText}>BREAKING</Text>
-                </View>
-              )}
+              {/* Pill rather than inline: desk colours are tuned for white
+                  surfaces and would not hold up over a photograph. */}
+              <Eyebrow
+                category={story.category}
+                breaking={story.breaking}
+                variant="pill"
+              />
               <Text style={styles.leadHeadline}>{story.headline}</Text>
             </View>
           </View>
@@ -63,17 +64,25 @@ export default function StoryTile({ story, variant = 'standard', onPress }: Prop
             <Text style={styles.summary} numberOfLines={2}>
               {story.summary}
             </Text>
-            <WireLine story={story} />
+            <WireLine
+              dateline={story.dateline}
+              filedAt={story.filedAt}
+              readMinutes={story.readMinutes}
+            />
           </View>
         </>
       ) : (
         <View style={styles.standardRow}>
           <View style={styles.standardText}>
-            <Eyebrow story={story} />
+            <Eyebrow category={story.category} breaking={story.breaking} />
             <Text style={styles.headline} numberOfLines={3}>
               {story.headline}
             </Text>
-            <WireLine story={story} />
+            <WireLine
+              dateline={story.dateline}
+              filedAt={story.filedAt}
+              readMinutes={story.readMinutes}
+            />
           </View>
           <Image
             source={{ uri: story.imageUrl }}
@@ -117,27 +126,6 @@ const styles = StyleSheet.create({
     padding: spacing.lg,
     gap: spacing.sm,
   },
-  breakingPill: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    alignSelf: 'flex-start',
-    gap: spacing.xs + 2,
-    backgroundColor: colors.signal,
-    paddingHorizontal: spacing.sm,
-    paddingVertical: 5,
-    borderRadius: radius.sm,
-  },
-  breakingDot: {
-    width: 5,
-    height: 5,
-    borderRadius: 2.5,
-    backgroundColor: colors.inkInverse,
-  },
-  breakingText: {
-    ...typography.eyebrow,
-    color: colors.inkInverse,
-  },
-
   // Standard
   standardRow: {
     flexDirection: 'row',

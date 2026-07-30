@@ -1,4 +1,8 @@
-import type { Category } from './theme';
+/**
+ * Desks a story can be filed to. This is the domain's list — `theme.ts` maps
+ * it to colours, so adding one here is a compile error until it gets a colour.
+ */
+export type Category = 'World' | 'Business' | 'Science' | 'Climate' | 'Culture';
 
 export type Story = {
   id: string;

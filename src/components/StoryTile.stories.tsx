@@ -38,6 +38,18 @@ export const Lead: SBStory = {
   },
 };
 
+/**
+ * Regression guard: a lead that is not breaking must still show its desk
+ * label. This case previously rendered no eyebrow at all, and stayed hidden
+ * because the only story sorting into the lead slot happens to be breaking.
+ */
+export const NonBreakingLead: SBStory = {
+  args: {
+    story: scienceStory,
+    variant: 'lead',
+  },
+};
+
 /** The workhorse row that everything below the lead uses. */
 export const Standard: SBStory = {
   args: {

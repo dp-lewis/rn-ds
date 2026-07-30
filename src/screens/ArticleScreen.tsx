@@ -109,14 +109,18 @@ export default function ArticleScreen({ route, navigation }: RootStackScreenProp
         </View>
 
         <View style={styles.body}>
-          <Eyebrow story={story} />
+          <Eyebrow category={story.category} breaking={story.breaking} />
           <Text style={styles.headline}>{story.headline}</Text>
           <Text style={styles.standfirst}>{story.summary}</Text>
 
           {/* Same wire line as the tiles, promoted into a rule-bound rail. */}
           <View style={styles.rail}>
             <Text style={styles.byline}>By {story.author}</Text>
-            <WireLine story={story} />
+            <WireLine
+              dateline={story.dateline}
+              filedAt={story.filedAt}
+              readMinutes={story.readMinutes}
+            />
           </View>
 
           {story.body.map((paragraph, index) => (
