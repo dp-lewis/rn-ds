@@ -1,9 +1,30 @@
 import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
+import type { ReactNode } from 'react';
 import { View } from 'react-native';
 
 import Eyebrow from './Eyebrow';
-import { palettes, spacing } from '../theme';
+import { DEFAULT_BRAND, themes, useTheme } from '../theme';
 import { CATEGORIES } from '../types';
+
+/** Stories read the theme too, rather than hard-coding gaps. */
+function Stack({ children, onDark = false }: { children: ReactNode; onDark?: boolean }) {
+  const theme = useTheme();
+
+  return (
+    <View
+      style={{
+        gap: theme.spacing.md,
+        ...(onDark && {
+          backgroundColor: themes[DEFAULT_BRAND].dark.color.surface.page,
+          padding: theme.spacing.lg,
+          borderRadius: theme.radius.md,
+        }),
+      }}
+    >
+      {children}
+    </View>
+  );
+}
 
 const meta = {
   title: 'Components/Eyebrow',
@@ -35,22 +56,22 @@ export const Pill: SBStory = {
   args: { variant: 'pill' },
 };
 
-/** Signal red outranks the desk colour and relabels. */
+/** Signal outranks the desk colour and relabels. */
 export const Breaking: SBStory = {
   args: { breaking: true },
 };
 
 /**
- * The full desk palette. Flip the toolbar theme to check both modes — the
- * inline colours differ between them, the pill colours deliberately do not.
+ * The full desk palette. Switch brand or theme in the toolbar — these come
+ * from the semantic layer, so they follow both.
  */
 export const AllCategories: SBStory = {
   render: (args) => (
-    <View style={{ gap: spacing.md }}>
+    <Stack>
       {CATEGORIES.map((category) => (
         <Eyebrow key={category} {...args} category={category} />
       ))}
-    </View>
+    </Stack>
   ),
 };
 
@@ -58,17 +79,10 @@ export const AllCategories: SBStory = {
 export const AllCategoriesAsPills: SBStory = {
   args: { variant: 'pill' },
   render: (args) => (
-    <View
-      style={{
-        gap: spacing.md,
-        backgroundColor: palettes.dark.surface.page,
-        padding: spacing.lg,
-        borderRadius: 8,
-      }}
-    >
+    <Stack onDark>
       {CATEGORIES.map((category) => (
         <Eyebrow key={category} {...args} category={category} />
       ))}
-    </View>
+    </Stack>
   ),
 };

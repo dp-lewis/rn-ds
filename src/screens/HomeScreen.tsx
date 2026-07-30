@@ -26,10 +26,11 @@ function formatToday(date: Date): string {
 
 function Masthead() {
   const styles = useStyles();
+  const theme = useTheme();
 
   return (
     <View style={styles.masthead}>
-      <Text style={styles.wordmark}>MERIDIAN</Text>
+      <Text style={styles.wordmark}>{theme.brandName}</Text>
       <Text style={styles.mastheadDate}>{formatToday(new Date())}</Text>
     </View>
   );

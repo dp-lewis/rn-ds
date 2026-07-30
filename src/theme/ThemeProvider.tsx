@@ -1,23 +1,28 @@
 import { createContext, useContext, type ReactNode } from 'react';
 import { useColorScheme } from 'react-native';
 
+import type { ThemeMode } from './alias';
+import { DEFAULT_BRAND, type BrandId } from './primitives';
 import { themes, type Theme } from './createTheme';
-import type { ThemeMode } from './palettes';
 
-const ThemeContext = createContext<Theme>(themes.light);
+const ThemeContext = createContext<Theme>(themes[DEFAULT_BRAND].light);
 
 type Props = {
   children: ReactNode;
+  /** Which title the app is wearing. Defaults to Meridian. */
+  brand?: BrandId;
   /** Forces a mode instead of following the OS. Storybook uses this. */
   mode?: ThemeMode;
 };
 
-export function ThemeProvider({ children, mode }: Props) {
+export function ThemeProvider({ children, brand = DEFAULT_BRAND, mode }: Props) {
   const scheme = useColorScheme();
-  const resolved: ThemeMode = mode ?? (scheme === 'dark' ? 'dark' : 'light');
+  const resolvedMode: ThemeMode = mode ?? (scheme === 'dark' ? 'dark' : 'light');
 
   return (
-    <ThemeContext.Provider value={themes[resolved]}>{children}</ThemeContext.Provider>
+    <ThemeContext.Provider value={themes[brand][resolvedMode]}>
+      {children}
+    </ThemeContext.Provider>
   );
 }
 

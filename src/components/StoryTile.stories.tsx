@@ -4,11 +4,17 @@ import { fn } from 'storybook/test';
 
 import StoryTile from './StoryTile';
 import storiesData from '../data/stories.json';
-import { spacing } from '../theme';
+import { useTheme } from '../theme';
 import type { Story } from '../types';
 
 const [breakingStory, businessStory, scienceStory, climateStory, cultureStory] =
   storiesData as Story[];
+
+/** Reads the gap from the theme rather than hard-coding it. */
+function Stack({ children }: { children: React.ReactNode }) {
+  const theme = useTheme();
+  return <View style={{ gap: theme.spacing.md }}>{children}</View>;
+}
 
 const meta = {
   title: 'Components/StoryTile',
@@ -92,12 +98,12 @@ export const AllDesks: SBStory = {
     },
   },
   render: (args) => (
-    <View style={{ gap: spacing.md }}>
+    <Stack>
       {[breakingStory, businessStory, scienceStory, climateStory, cultureStory].map(
         (story) => (
           <StoryTile key={story.id} {...args} story={story} variant="standard" />
         ),
       )}
-    </View>
+    </Stack>
   ),
 };

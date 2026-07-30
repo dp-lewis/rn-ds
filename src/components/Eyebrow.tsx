@@ -1,6 +1,6 @@
 import { Text, View } from 'react-native';
 
-import { categoryOnImage, makeStyles, signalOnImage, useTheme } from '../theme';
+import { makeStyles, useTheme } from '../theme';
 import type { Category } from '../types';
 
 export type EyebrowVariant = 'inline' | 'pill';
@@ -26,17 +26,17 @@ export default function Eyebrow({
   const styles = useStyles();
   const isPill = variant === 'pill';
 
-  // Pills always sit on a dark scrim, so they take the fixed on-image palette
-  // rather than the themed one, which is tuned for app surfaces.
+  // Pills always sit on a dark scrim, so they take the fixed on-image tokens
+  // rather than the themed ones, which are tuned for app surfaces.
   const tint = isPill
     ? breaking
-      ? signalOnImage
-      : categoryOnImage[category]
+      ? theme.color.onImage.signal
+      : theme.color.onImage.category[category]
     : breaking
       ? theme.color.signal
       : theme.color.category[category];
 
-  const foreground = isPill ? theme.color.text.inverse : tint;
+  const foreground = isPill ? theme.color.onImage.text : tint;
 
   return (
     <View style={[styles.row, isPill && [styles.pill, { backgroundColor: tint }]]}>

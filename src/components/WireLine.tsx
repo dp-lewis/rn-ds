@@ -31,9 +31,9 @@ export default function WireLine({ dateline, filedAt, readMinutes }: Props) {
 }
 
 const useStyles = makeStyles((t) => ({
+  // typography.wire already carries the brand's mono face.
   wire: {
     ...t.typography.wire,
-    fontFamily: t.fonts.mono,
     color: t.color.text.muted,
   },
   /** text.faint, not border.hairline — the old border tone was 1.32:1. */

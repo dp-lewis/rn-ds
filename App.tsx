@@ -59,8 +59,12 @@ function Navigation() {
 export default function App() {
   return (
     <SafeAreaProvider>
-      {/* No `mode` prop, so the app follows the OS appearance setting. */}
-      <ThemeProvider>
+      {/*
+        `brand` picks the masthead — swap it for 'tribune' or 'pulse' and the
+        whole app re-skins, because components only read semantic tokens.
+        No `mode` prop, so it follows the OS appearance setting.
+      */}
+      <ThemeProvider brand="meridian">
         <Navigation />
       </ThemeProvider>
     </SafeAreaProvider>

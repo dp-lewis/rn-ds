@@ -1,14 +1,23 @@
 import type { Preview } from '@storybook/react-native-web-vite';
+import type { ReactNode } from 'react';
 import { View } from 'react-native';
 
-import { ThemeProvider, useTheme, type ThemeMode } from '../src/theme';
+import {
+  BRAND_IDS,
+  DEFAULT_BRAND,
+  ThemeProvider,
+  brands,
+  useTheme,
+  type BrandId,
+  type ThemeMode,
+} from '../src/theme';
 
 /**
- * Components are designed to sit on the app's paper ground inside a padded
+ * Components are designed to sit on the app's page ground inside a padded
  * list at phone width, so every story gets that context rather than a bare
  * white canvas stretched across a desktop viewport.
  */
-function Frame({ children }: { children: React.ReactNode }) {
+function Frame({ children }: { children: ReactNode }) {
   const theme = useTheme();
 
   return (
@@ -20,6 +29,15 @@ function Frame({ children }: { children: React.ReactNode }) {
 
 const preview: Preview = {
   globalTypes: {
+    brand: {
+      description: 'Masthead',
+      toolbar: {
+        title: 'Brand',
+        icon: 'globe',
+        items: BRAND_IDS.map((id) => ({ value: id, title: brands[id].name })),
+        dynamicTitle: true,
+      },
+    },
     theme: {
       description: 'Colour scheme',
       toolbar: {
@@ -34,11 +52,15 @@ const preview: Preview = {
     },
   },
   initialGlobals: {
+    brand: DEFAULT_BRAND,
     theme: 'light',
   },
   decorators: [
     (Story, context) => (
-      <ThemeProvider mode={context.globals.theme as ThemeMode}>
+      <ThemeProvider
+        brand={context.globals.brand as BrandId}
+        mode={context.globals.theme as ThemeMode}
+      >
         <Frame>
           <Story />
         </Frame>
