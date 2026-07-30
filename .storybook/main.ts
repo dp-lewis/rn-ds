@@ -39,6 +39,12 @@ const config: StorybookConfig = {
   async viteFinal(config) {
     config.plugins = [...(config.plugins ?? []), stubExpoTypeDeclarations];
 
+    // GitHub Pages serves this under /<repo>/storybook/. Unset locally, so
+    // `npm run storybook` still serves from the root.
+    if (process.env.STORYBOOK_BASE_URL) {
+      config.base = process.env.STORYBOOK_BASE_URL;
+    }
+
     // The dependency pre-bundler hits the same files before plugins apply, so
     // keep these two out of it and let the normal pipeline handle them.
     // The pre-bundler reads these files before the plugin above can apply, so
